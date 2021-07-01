@@ -320,6 +320,40 @@ class VideoPlayer:
                     self.video_playing[vid_tracker[i]] = 'playing'
 
 
+        def search_videos(self, search_term):
+        """Display all the videos whose titles contain the search_term.
+
+        Args:
+            search_term: The query to be used in search.
+        """
+        videos = self._video_library.get_all_videos()
+        vid_tracker = []
+        for x in range(len(videos)):
+            if search_term.upper() in videos[x].title.upper():
+                vid_tracker.append(videos[x].title)
+        vid_tracker = sorted(vid_tracker)
+        #print(vid_tracker)
+        if len(vid_tracker) <= 0:
+            print(f"No search results for {search_term}")
+        else:
+            print(f"Here are the results for {search_term}:")
+            for i in range(len(vid_tracker)):
+                for k in range(len(videos)):
+                    if videos[k].title == vid_tracker[i]:
+                        tag = str(videos[k].tags)
+                        characters_to_remove = "()'',"
+                        for character in characters_to_remove:
+                            tag = tag.replace(character, "")
+                        print(f"{i+1}) {videos[k].title} ({videos[k].video_id}) [{tag}] ")
+            print("Would you like to play any of the above? If yes, specify the number of the video. \n If your answer is not a valid number, we will assume it's a no.")
+            choice = input()
+            for i in range(len(vid_tracker)):
+                if choice.isdigit():
+                    if int(choice) == i+1:
+                        print(f"Playing video: {vid_tracker[i]}")
+                        self.video_playing[vid_tracker[i]] = 'playing'
+
+
     def search_videos_tag(self, video_tag):
         """Display all videos whose tags contains the provided tag.
 
@@ -354,4 +388,3 @@ class VideoPlayer:
                     if int(choice) == i+1:
                         print(f"Playing video: {vid_tracker[i]}")
                         self.video_playing[vid_tracker[i]] = 'playing'
-
