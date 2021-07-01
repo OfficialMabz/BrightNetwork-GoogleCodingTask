@@ -110,23 +110,6 @@ class CommandParser:
                     "video tag.")
             self._player.search_videos_tag(command[1])
 
-        elif command[0].upper() == "FLAG_VIDEO":
-            if len(command) == 3:
-                self._player.flag_video(command[1], command[2])
-            elif len(command) == 2:
-                self._player.flag_video(command[1])
-            else:
-                raise CommandException(
-                    "Please enter FLAG_VIDEO command followed by a "
-                    "video_id and an optional flag reason.")
-
-        elif command[0].upper() == "ALLOW_VIDEO":
-            if len(command) != 2:
-                raise CommandException(
-                    "Please enter ALLOW_VIDEO command followed by a "
-                    "video_id.")
-            self._player.allow_video(command[1])
-
         elif command[0].upper() == "HELP":
             self._get_help()
         else:
@@ -155,8 +138,6 @@ class CommandParser:
             SHOW_ALL_PLAYLISTS - Display all the available playlists.
             SEARCH_VIDEOS <search_term> - Display all the videos whose titles contain the search_term.
             SEARCH_VIDEOS_WITH_TAG <tag_name> -Display all videos whose tags contains the provided tag.
-            FLAG_VIDEO <video_id> <flag_reason> - Mark a video as flagged.
-            ALLOW_VIDEO <video_id> - Removes a flag from a video.
             HELP - Displays help.
             EXIT - Terminates the program execution.
         """)
