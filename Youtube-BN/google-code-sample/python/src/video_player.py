@@ -10,6 +10,7 @@ class VideoPlayer:
         #below variable is an global variable 
         # which will be used as stack to keep track of the current video playing
         self.video_playing = {}
+        #below dictionary will keep the playlists and their videos
         self.playLists = {}
 
     def number_of_videos(self):
@@ -21,13 +22,15 @@ class VideoPlayer:
         print("Here's a list of all available videos:")
         vid = []
         for x in range(len(videos)):
+            #below lines will strip out some of the strings from tags 
             tag = str(videos[x].tags)
             characters_to_remove = "()'',"
             for character in characters_to_remove:
                 tag = tag.replace(character, "")
+            #formats the videos and includes to the list    
             inc = f"{videos[x].title} ({videos[x].video_id}) [{tag}]"
             vid.append(inc)
-
+        #using the sort function to sort the formating and output
         alphetic_order = sorted(vid)
         for i in alphetic_order:
             print(i)
@@ -36,11 +39,13 @@ class VideoPlayer:
     
     def play_video(self, video_id):
         videos = self._video_library.get_video(video_id)
-
+        
+        #if already a video playing stop and start the new one
         if (len(self.video_playing) > 0) and bool(videos):
             print(f"Stopping video: {self.video_playing.popitem()[0]}")
             print(f"Playing video: {videos.title}")
             self.video_playing[videos.title] = 'playing'
+        #starts the video new and adds it to the playing dictionary with status of playing
         elif bool(videos):
             print(f"Playing video: {videos.title}")
             self.video_playing[videos.title] = 'playing'
@@ -270,10 +275,11 @@ class VideoPlayer:
                 vid_tracker.append(videos[x].title)
         vid_tracker = sorted(vid_tracker)
         #print(vid_tracker)
-        for i in range(len(vid_tracker)):
-            if len(vid_tracker) <= 0:
+        if len(vid_tracker) <= 0:
                 print(f"No search results for {search_term}")
-            else:
+        else:
+            print("Here are the results for cat:")
+            for i in range(len(vid_tracker)):
                 for k in range(len(videos)):
                     if videos[k].title == vid_tracker[i]:
                         tag = str(videos[k].tags)
@@ -284,11 +290,10 @@ class VideoPlayer:
         print("Would you like to play any of the above? If yes, specify the number of the video. \n If your answer is not a valid number, we will assume it's a no.")
         choice = input()
         for i in range(len(vid_tracker)):
-            if choice != i:
-                continue
-            else:
-                print("im in")
-                print(f"Playing video: {vid_tracker[i]}")
+            if choice.isdigit():
+                if int(choice) == i+1:
+                    print(f"Playing video: {vid_tracker[i]}")
+                    self.video_playing[vid_tracker[i]] = 'playing'
 
 
     def search_videos_tag(self, video_tag):
