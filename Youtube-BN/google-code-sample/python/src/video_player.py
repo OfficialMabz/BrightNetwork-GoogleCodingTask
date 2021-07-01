@@ -207,8 +207,13 @@ class VideoPlayer:
         Args:
             playlist_name: The playlist name.
         """
+        #below two lines will get all the playlist names and turn them into uppercase for comparison with playlist_name
         playlists = list(self.playLists.keys())
         playlists = [each_string.upper() for each_string in playlists]
+        
+        #this variable will be used as copy of the original global variable so that original dictionary does not get affected
+        #the for loop will retrive all the playlist with keys being the uppercase and value being the original playlist name
+        #the checks are done to avoid error of case sensitivity as the user may enter playlist name in different case
         local_playList = {}
         for key in self.playLists:
             local_playList[key.upper()] = self.playLists[key]
@@ -217,10 +222,13 @@ class VideoPlayer:
             if len(local_playList[playlist_name.upper()]) <= 0:
                 print("No videos here yet")
             else:
+                #below we are comparing and iterating through the playlist to find the video user looking for
+                #multiple checks are done to handle if the user inputs different case string for their playlist names
                 for keys in self.playLists:
                     if keys.upper() == playlist_name.upper():
                         for i in self.playLists[keys]:
                             vid = self._video_library.get_video(i)
+                            #below three lines strips the tags
                             tag = str(vid.tags)
                             characters_to_remove = "()'',"
                             for character in characters_to_remove:
@@ -244,6 +252,8 @@ class VideoPlayer:
         elif not bool(vid):
             print(f"Cannot remove video from {playlist_name}: Video does not exist")
         else:
+            #if above checks do not apply we will do some checks by iterating through the playlist and finding the video
+            #then check for case sensitivity then remove
             for keys in self.playLists:
                 if keys.upper() == playlist_name.upper():
                     if video_id in self.playLists[keys]:
@@ -265,6 +275,8 @@ class VideoPlayer:
         if playlist_name.upper() not in playlists:
             print(f"Cannot clear playlist {playlist_name}: Playlist does not exist")
         else:
+            #if above checks do not apply we will do some checks by iterating through the playlist and finding the video
+            #then check for case sensitivity then clear the array of the given playlist
             for keys in self.playLists:
                 if keys.upper() == playlist_name.upper():
                     self.playLists[keys].clear()
@@ -281,6 +293,7 @@ class VideoPlayer:
         if playlist_name.upper() not in playlists:
             print(f"Cannot delete playlist {playlist_name}: Playlist does not exist")
         else:
+            #we are transforming the playlist into list in order to avoid loop error as we will be deleting an dictionary element during the dictionary loop
             for keys in list(self.playLists):
                 if keys.upper() == playlist_name.upper():
                     del self.playLists[keys]
