@@ -355,20 +355,3 @@ class VideoPlayer:
                         print(f"Playing video: {vid_tracker[i]}")
                         self.video_playing[vid_tracker[i]] = 'playing'
 
-
-    def flag_video(self, video_id, flag_reason=""):
-        """Mark a video as flagged.
-
-        Args:
-            video_id: The video_id to be flagged.
-            flag_reason: Reason for flagging the video.
-        """
-        print("flag_video needs implementation")
-
-    def allow_video(self, video_id):
-        """Removes a flag from a video.
-
-        Args:
-            video_id: The video_id to be allowed again.
-        """
-        print("allow_video needs implementation")
