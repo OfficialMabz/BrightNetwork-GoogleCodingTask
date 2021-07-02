@@ -306,16 +306,20 @@ class VideoPlayer:
             search_term: The query to be used in search.
         """
         videos = self._video_library.get_all_videos()
+        #we will use a list to hold the video title to compare the search
         vid_tracker = []
         for x in range(len(videos)):
+            #comparing the searched word with all videos and appending video title to the list for later use
             if search_term.upper() in videos[x].title.upper():
                 vid_tracker.append(videos[x].title)
+        #to output the result in a alphabetic order 
         vid_tracker = sorted(vid_tracker)
-        #print(vid_tracker)
+        #if the list is empty it means there is no title that matches the search and will output warning
         if len(vid_tracker) <= 0:
                 print(f"No search results for {search_term}")
         else:
             print("Here are the results for cat:")
+            #below we are doing similar thing as we have done before by extracting the information of the videos that is within the list we created earlier
             for i in range(len(vid_tracker)):
                 for k in range(len(videos)):
                     if videos[k].title == vid_tracker[i]:
@@ -324,48 +328,17 @@ class VideoPlayer:
                         for character in characters_to_remove:
                             tag = tag.replace(character, "")
                         print(f"{i+1}) {videos[k].title} ({videos[k].video_id}) [{tag}] ")
-        print("Would you like to play any of the above? If yes, specify the number of the video. \n If your answer is not a valid number, we will assume it's a no.")
-        choice = input()
-        for i in range(len(vid_tracker)):
-            if choice.isdigit():
-                if int(choice) == i+1:
-                    print(f"Playing video: {vid_tracker[i]}")
-                    self.video_playing[vid_tracker[i]] = 'playing'
-
-
-        def search_videos(self, search_term):
-        """Display all the videos whose titles contain the search_term.
-
-        Args:
-            search_term: The query to be used in search.
-        """
-        videos = self._video_library.get_all_videos()
-        vid_tracker = []
-        for x in range(len(videos)):
-            if search_term.upper() in videos[x].title.upper():
-                vid_tracker.append(videos[x].title)
-        vid_tracker = sorted(vid_tracker)
-        #print(vid_tracker)
-        if len(vid_tracker) <= 0:
-            print(f"No search results for {search_term}")
-        else:
-            print(f"Here are the results for {search_term}:")
-            for i in range(len(vid_tracker)):
-                for k in range(len(videos)):
-                    if videos[k].title == vid_tracker[i]:
-                        tag = str(videos[k].tags)
-                        characters_to_remove = "()'',"
-                        for character in characters_to_remove:
-                            tag = tag.replace(character, "")
-                        print(f"{i+1}) {videos[k].title} ({videos[k].video_id}) [{tag}] ")
+            #below information will only be read or printout if there is a video found
             print("Would you like to play any of the above? If yes, specify the number of the video. \n If your answer is not a valid number, we will assume it's a no.")
             choice = input()
+            #below we will use the user input to play the requested video
             for i in range(len(vid_tracker)):
                 if choice.isdigit():
                     if int(choice) == i+1:
                         print(f"Playing video: {vid_tracker[i]}")
+                        #below code will add the video to the dictionary of current video playing
                         self.video_playing[vid_tracker[i]] = 'playing'
-
+                    
 
     def search_videos_tag(self, video_tag):
         """Display all videos whose tags contains the provided tag.
@@ -375,13 +348,18 @@ class VideoPlayer:
         """
         videos = self._video_library.get_all_videos()
         tag_tracker = []
+        #below we are doing similar to previous function 
+ 
         for x in range(len(videos)):
             check = list(videos[x].tags)
+            #below checks are done to make the tags upper letter comparison 
+            #there are extra steps are done as the tags are in a tuple initially
             out = map(lambda x:x.upper(), check)
             output = list(out)
             if video_tag.upper() in output:
                 tag_tracker.append(videos[x].title)
         vid_tracker = sorted(tag_tracker)
+        #below code are similar to previous function as they perform similarly
         if len(vid_tracker) <= 0:
             print(f"No search results for {video_tag}")
         else:
